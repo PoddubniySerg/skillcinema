@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="111dp"
+    android:layout_height="235dp"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    tools:ignore="TextSizeCheck">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/poster"
+        android:layout_width="match_parent"
+        android:layout_height="156dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription,ImageContrastCheck"
+        tools:src="@drawable/movies_item_poster_background_place_holder_seen" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/seenIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/movies_item_seen_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/poster"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ImageContrastCheck" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/rating"
+        android:layout_width="17dp"
+        android:layout_height="10dp"
+        android:layout_gravity="end"
+        android:layout_margin="6dp"
+        android:background="@drawable/movies_item_rating_background_shape"
+        android:gravity="center"
+        android:textColor="@color/movie_rating_text_color"
+        android:textSize="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpUsage,TextSizeCheck"
+        tools:text="7.8" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/nameMovie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/movie_name_text_color"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/poster"
+        app:layout_goneMarginTop="0dp"
+        tools:text="Близкие Близкие Близкие" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/genresMovie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/movie_genres_text_color"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameMovie"
+        tools:ignore="TextContrastCheck"
+        tools:text="драма драма драма драма драма" />
+</androidx.constraintlayout.widget.ConstraintLayout>

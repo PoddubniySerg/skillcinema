@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/onboarding_navigation"
+    app:startDestination="@id/onboardingFragment">
+
+    <fragment
+        android:id="@+id/loaderFragment"
+        android:name="ru.skillbox.feature_onboarding.ui.fragments.LoaderFragment"
+        android:label="LoaderFragment"
+        tools:layout="@layout/loader_fragment">
+        <argument
+            android:name="@string/bottom_navigation_is_hidden_nav_graph_argument"
+            android:defaultValue="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="ru.skillbox.feature_onboarding.ui.fragments.OnboardingFragment"
+        android:label="OnboardingFragment"
+        tools:layout="@layout/onboarding_fragment">
+        <argument
+            android:name="@string/bottom_navigation_is_hidden_nav_graph_argument"
+            android:defaultValue="true" />
+        <action
+            android:id="@+id/action_onboardingFragment_to_loaderFragment"
+            app:destination="@id/loaderFragment"
+            app:enterAnim="@anim/onboarding_enter_slide_from_left_to_right"
+            app:exitAnim="@anim/onboarding_exit_slide_from_right_to_left"
+            app:popUpTo="@id/onboardingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

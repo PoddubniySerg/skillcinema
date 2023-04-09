@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_skip">Пропустить</string>
+
+    <string-array name="on_boarding_messages">
+        <item>Узнавай\nо премьерах</item>
+        <item>Создавай\nколлекции</item>
+        <item>Делись\nс друзьями</item>
+    </string-array>
+</resources>

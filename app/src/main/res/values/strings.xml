@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name" translatable="false">SkillCinema</string>
+
+    <string name="home_button_bottom_nav">Home</string>
+    <string name="search_button_bottom_nav">Search</string>
+    <string name="account_button_bottom_nav">Account</string>
+</resources>

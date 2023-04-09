@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="26dp"
+    android:layout_marginTop="36dp">
+
+    <TextView
+        android:id="@+id/nameCollection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/graphik"
+        android:textColor="@color/collection_item_title_name_text_color"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Premiers" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonShowAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="26dp"
+        android:background="?attr/selectableItemBackground"
+        android:fontFamily="@font/graphik"
+        android:minWidth="24dp"
+        android:minHeight="15dp"
+        android:textAllCaps="false"
+        android:textColor="@color/collection_item_title_show_all_text_color"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/nameCollection"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="SpUsage,TextSizeCheck"
+        tools:text="Show all" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/collection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameCollection"
+        tools:listitem="@layout/movies_item_movie" />
+</androidx.constraintlayout.widget.ConstraintLayout>

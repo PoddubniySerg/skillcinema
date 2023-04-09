@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="progress_bar_color">#FF3D3BFF</color>
+    <color name="movies_item_show_all_text_color">#FF272727</color>
+    <color name="collection_item_title_name_text_color">#FF272727</color>
+    <color name="collection_item_title_show_all_text_color">#FF3D3BFF</color>
+    <color name="movie_poster_seen_background_color_gradient_start">#663D3BFF</color>
+    <color name="movie_poster_seen_background_color_gradient_end">#003D3BFF</color>
+    <color name="movie_poster_not_seen_background_color">#66B5B5C9</color>
+    <color name="movie_rating_background_color">#FF3D3BFF</color>
+    <color name="movie_rating_text_color">#FFFFFFFF</color>
+    <color name="movie_name_text_color">#FF272727</color>
+    <color name="movie_genres_text_color">#FF838390</color>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="on_boarding_main_text_color">#FF272727</color>
+    <color name="skip_text_color">#FFB5B5C9</color>
+    <color name="on_boarding_dots_selected_color">#FF121616</color>
+    <color name="on_boarding_dots_default_color">#FFD9D9D9</color>
+</resources>

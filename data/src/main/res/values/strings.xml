@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="is_first_app_launch_key" translatable="false">skillcinema_is_first_app_launch</string>
+    <string name="kinopoisk_base_url" translatable="false">https://kinopoiskapiunofficial.tech</string>
+</resources>

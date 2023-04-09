@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="movies_show_all_item_text_view">Показать все</string>
+
+    <string-array name="home_movie_collections_names">
+        <item>Премьеры</item>
+        <item>Популярное</item>
+        <item>Random</item>
+        <item>Топ-250</item>
+        <item>Random</item>
+        <item>Сериалы</item>
+    </string-array>
+</resources>

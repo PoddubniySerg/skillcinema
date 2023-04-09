@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bottom_navigation_is_hidden_nav_graph_argument" translatable="false">bottom_navigation_is_hidden</string>
+    <string name="get_collection_names_key" translatable="false">collection_names_key</string>
+    <string name="collection_title_key" translatable="false">collection_title_key</string>
+    <string name="collection_class_key" translatable="false">collection_class_key</string>
+    <string name="collection_index_key" translatable="false">collection_index_key</string>
+    <string name="country_id_key" translatable="false">country_id_by_name:%s</string>
+    <string name="genre_id_key" translatable="false">genre_id_by_name:%s</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="movies_show_all_item_text_view">Show all</string>
+
+    <string-array name="home_movie_collections_names">
+        <item>Premiers</item>
+        <item>Popular</item>
+        <item>Random</item>
+        <item>Top-250</item>
+        <item>Random</item>
+        <item>Serials</item>
+    </string-array>
+</resources>

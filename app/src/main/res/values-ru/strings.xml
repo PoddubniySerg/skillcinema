@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_button_bottom_nav">Домой</string>
+    <string name="search_button_bottom_nav">Найти</string>
+    <string name="account_button_bottom_nav">Аккаунт</string>
+</resources>

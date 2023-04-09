@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <color android:color="@color/movie_poster_not_seen_background_color" />
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="4dp" />
+            <size
+                android:width="111dp"
+                android:height="156dp" />
+
+            <gradient
+                android:angle="90"
+                android:endColor="@color/movie_poster_seen_background_color_gradient_end"
+                android:startColor="@color/movie_poster_seen_background_color_gradient_start" />
+        </shape>
+    </item>
+</layer-list>

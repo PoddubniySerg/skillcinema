@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/onboarding_navigation">
+    <include app:graph="@navigation/onboarding_navigation" />
+    <include app:graph="@navigation/home_navigation" />
+    <action
+        android:id="@id/action_loaderFragment_to_homeFragment"
+        app:destination="@id/home_nav_host"
+        app:popUpTo="@id/home_nav_host"
+        app:popUpToInclusive="true" />
+    <include app:graph="@navigation/list_navigation" />
+    <action
+        android:id="@id/action_global_list_nav_host"
+        app:destination="@id/list_nav_host" />
+</navigation>
