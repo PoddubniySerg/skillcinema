@@ -1,6 +1,7 @@
 package ru.skillbox.core.ui.adapters
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
@@ -15,7 +16,9 @@ import ru.skillbox.core.domain.entities.Movie
 import ru.skillbox.core.ui.viewholders.MovieViewHolder
 
 class MovieItemAdapter(
-    private val onItemPosterClick: (Movie) -> Unit,
+    private val allButtonIcon: Drawable,
+    private val allButtonText: String,
+    private val onItemClick: (Movie) -> Unit,
     private val onClickAllButton: () -> Unit
 ) : ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffUtilCallback()) {
 
@@ -71,17 +74,22 @@ class MovieItemAdapter(
 
     override fun getItemViewType(position: Int): Int {
         val lastIndexItems = itemCount - 1
-        return if (position < lastIndexItems) R.layout.movies_item_movie
-        else R.layout.movies_item_show_all
+        return if (position < lastIndexItems) {
+            R.layout.movies_item_movie
+        } else {
+            R.layout.movies_item_show_all
+        }
     }
 
     private fun inflateMovie(position: Int, holder: MovieViewHolder) {
         val movie = getItem(position)
-        holder.bind(movie, onItemPosterClick)
+        holder.bind(movie, onItemClick)
     }
 
     private fun inflateShowAllItem(binding: MoviesItemShowAllBinding) {
         with(binding) {
+            buttonShowAllMovies.setImageDrawable(allButtonIcon)
+            showAllItemText.text = allButtonText
             buttonShowAllMovies.setOnClickListener { onClickAllButton() }
         }
     }

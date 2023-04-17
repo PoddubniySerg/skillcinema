@@ -3,6 +3,7 @@ package ru.skillbox.cinema.di
 import dagger.Component
 import ru.skillbox.data.di.DataModule
 import ru.skillbox.data.di.DataScope
+import ru.skillbox.feature_film_page.di.FilmPageComponent
 import ru.skillbox.feature_home.di.HomeComponent
 import ru.skillbox.feature_list.di.ListComponent
 import ru.skillbox.feature_onboarding.di.OnboardingComponent
@@ -16,4 +17,6 @@ interface AppComponent {
     fun homeComponent(): HomeComponent
 
     fun listComponent(): ListComponent
+
+    fun filmPageComponent(): FilmPageComponent
 }

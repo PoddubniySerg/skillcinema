@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/film_page_navigation"
+    app:startDestination="@id/filmPageFragment">
+
+    <fragment
+        android:id="@+id/filmPageFragment"
+        android:name="ru.skillbox.feature_film_page.ui.fragments.FilmPageFragment"
+        android:label="FilmPageFragment"
+        tools:layout="@layout/film_page_fragment"/>
+</navigation>

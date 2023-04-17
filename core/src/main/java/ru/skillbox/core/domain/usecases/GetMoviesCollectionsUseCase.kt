@@ -2,7 +2,7 @@ package ru.skillbox.core.domain.usecases
 
 import ru.skillbox.core.domain.entities.Movie
 import ru.skillbox.core.domain.entities.PremierMovie
-import ru.skillbox.core.domain.models.AppCollection
+import ru.skillbox.core.domain.models.MoviesCollection
 import ru.skillbox.core.domain.models.MoviesCollectionTypes
 import ru.skillbox.core.domain.models.MoviesFilter
 import ru.skillbox.core.domain.repositories.MoviesCollectionsSource
@@ -16,8 +16,8 @@ open class GetMoviesCollectionsUseCase(
     private val collectionsSource: MoviesCollectionsSource
 ) {
 
-    suspend fun execute(names: List<String>): List<AppCollection<Movie>> {
-        val collections = mutableListOf<AppCollection<Movie>>()
+    suspend fun execute(names: List<String>): List<MoviesCollection> {
+        val collections = mutableListOf<MoviesCollection>()
         for (i in names.indices) {
             when (i) {
                 MoviesCollectionTypes.PREMIERS.index -> collections.add(getPremiers(names[i], i))
@@ -30,7 +30,7 @@ open class GetMoviesCollectionsUseCase(
         return collections
     }
 
-    private suspend fun getPremiers(name: String, index: Int): AppCollection<Movie> {
+    private suspend fun getPremiers(name: String, index: Int): MoviesCollection {
         val dateFrom = DatesSource.getDateFrom()
         val dateTo = DatesSource.getDateTo(dateFrom)
         val formatter = DatesSource.getDateFormatter()
@@ -40,17 +40,17 @@ open class GetMoviesCollectionsUseCase(
             collectionsSource.getPremiers(dateTo.year, dateTo.month)?.let { movies.addAll(it) }
         }
         val premiers = MoviesUtils.filterPremiersByDate(movies, dateFrom, dateTo, formatter)
-        return AppCollection(index, name, filter = null, premiers)
+        return MoviesCollection(index, name, filter = null, premiers)
     }
 
-    private suspend fun getPopular(name: String, index: Int): AppCollection<Movie> {
+    private suspend fun getPopular(name: String, index: Int): MoviesCollection {
         val movies = collectionsSource.getPopular().stream()
             .limit(Constants.MAX_MOVIES_COLLECTION_SIZE)
             .toList()
-        return AppCollection(index, name, filter = null, movies)
+        return MoviesCollection(index, name, filter = null, movies)
     }
 
-    private suspend fun getRandomCollection(index: Int): AppCollection<Movie> {
+    private suspend fun getRandomCollection(index: Int): MoviesCollection {
         val countryAndGenre = CountryAndGenreSource(collectionsSource.getCountriesAndGenres())
         val name = "${countryAndGenre.genreName} ${countryAndGenre.countryName}"
         val filter = MoviesFilter(countryAndGenre.countryId, countryAndGenre.genreId)
@@ -59,11 +59,11 @@ open class GetMoviesCollectionsUseCase(
         return getAppCollection(name, index, filter, movies)
     }
 
-    private suspend fun getTop250(name: String, index: Int): AppCollection<Movie> {
+    private suspend fun getTop250(name: String, index: Int): MoviesCollection {
         return getAppCollection(name, index, filter = null, collectionsSource.getTop250())
     }
 
-    private suspend fun getTvSeries(name: String, index: Int): AppCollection<Movie> {
+    private suspend fun getTvSeries(name: String, index: Int): MoviesCollection {
         return getAppCollection(name, index, filter = null, collectionsSource.getSeries())
     }
 
@@ -72,9 +72,9 @@ open class GetMoviesCollectionsUseCase(
         index: Int,
         filter: MoviesFilter?,
         movies: List<Movie>
-    ): AppCollection<Movie> {
+    ): MoviesCollection {
         val limitedMovies =
             MoviesUtils.limitMovies(movies, Constants.MAX_MOVIES_COLLECTION_SIZE)
-        return AppCollection(index, name, filter, limitedMovies)
+        return MoviesCollection(index, name, filter, limitedMovies)
     }
 }

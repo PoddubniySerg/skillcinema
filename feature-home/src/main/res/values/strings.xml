@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="movies_collection_item_all_button_text">All</string>
+    <string name="movies_show_all_item_text_view">Show all</string>
 </resources>

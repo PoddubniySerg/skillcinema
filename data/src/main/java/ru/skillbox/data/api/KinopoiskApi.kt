@@ -3,6 +3,7 @@ package ru.skillbox.data.api
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.skillbox.data.api.dto.*
 import ru.skillbox.data.secret.Secret
@@ -39,4 +40,16 @@ interface KinopoiskApi {
     @Headers("X-API-KEY: ${Secret.API_KEY}")
     @GET("/api/v2.2/films?type=TV_SERIES")
     suspend fun getTvSeries(@Query(value = "page") pageNumber: Int): Response<TVSeriesDto>
+
+    @Headers("X-API-KEY: ${Secret.API_KEY}")
+    @GET("/api/v2.2/films/{id}")
+    suspend fun getMovieDetails(@Path("id") id: Long): Response<MovieDetailsDto>
+
+    @Headers("X-API-KEY: ${Secret.API_KEY}")
+    @GET("/api/v1/staff")
+    suspend fun getMovieStaff(@Query("filmId") id: Long): Response<List<StaffItemDto>>
+
+    @Headers("X-API-KEY: ${Secret.API_KEY}")
+    @GET("/api/v2.2/films/{id}/seasons")
+    suspend fun getSeasons(@Path("id") id: Int): Response<SeasonResponseDto>
 }

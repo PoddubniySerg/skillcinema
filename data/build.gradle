@@ -62,4 +62,5 @@ dependencies {
     implementation project(path: ':feature-onboarding')
     implementation project(path: ':feature-home')
     implementation project(path: ':feature-list')
+    implementation project(path: ':feature-film-page')
 }

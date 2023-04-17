@@ -30,7 +30,9 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
             val isHidden = arguments?.getBoolean(key) == true
             if (isHidden) {
                 binding.bottomNav.visibility = View.GONE
-            } else binding.bottomNav.visibility = View.VISIBLE
+            } else {
+                binding.bottomNav.visibility = View.VISIBLE
+            }
         }
     }
 }

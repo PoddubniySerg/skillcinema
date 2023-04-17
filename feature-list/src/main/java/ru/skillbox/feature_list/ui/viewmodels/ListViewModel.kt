@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.skillbox.core.domain.entities.Movie
 import ru.skillbox.core.utils.States
-import ru.skillbox.feature_list.domain.usecases.GetMoviesByPageUseCase
+import ru.skillbox.feature_list.domain.GetMoviesByPageUseCase
 import ru.skillbox.feature_list.models.GetMoviesByPageParams
 import ru.skillbox.feature_list.models.ListItem
 import ru.skillbox.feature_list.models.MovieItem

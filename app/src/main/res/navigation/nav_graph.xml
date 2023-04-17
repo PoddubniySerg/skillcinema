@@ -8,10 +8,14 @@
     <action
         android:id="@id/action_loaderFragment_to_homeFragment"
         app:destination="@id/home_nav_host"
-        app:popUpTo="@id/home_nav_host"
+        app:popUpTo="@+id/loaderFragment"
         app:popUpToInclusive="true" />
     <include app:graph="@navigation/list_navigation" />
     <action
         android:id="@id/action_global_list_nav_host"
         app:destination="@id/list_nav_host" />
+    <include app:graph="@navigation/film_page_navigation" />
+    <action
+        android:id="@id/action_global_film_page_navigation"
+        app:destination="@id/film_page_navigation" />
 </navigation>

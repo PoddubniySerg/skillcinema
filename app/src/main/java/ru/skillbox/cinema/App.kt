@@ -3,11 +3,18 @@ package ru.skillbox.cinema
 import ru.skillbox.cinema.di.AppComponent
 import ru.skillbox.cinema.di.DaggerAppComponent
 import ru.skillbox.data.DataApp
+import ru.skillbox.feature_film_page.di.FilmPageComponent
+import ru.skillbox.feature_film_page.di.FilmPageComponentProvider
 import ru.skillbox.feature_home.di.HomeComponentProvider
 import ru.skillbox.feature_list.di.ListComponentProvider
 import ru.skillbox.feature_onboarding.di.OnboardingComponentProvider
 
-class App : DataApp(), OnboardingComponentProvider, HomeComponentProvider, ListComponentProvider {
+class App : DataApp(),
+    OnboardingComponentProvider,
+    HomeComponentProvider,
+    ListComponentProvider,
+    FilmPageComponentProvider
+{
 
     private lateinit var appComponent: AppComponent
 
@@ -21,4 +28,6 @@ class App : DataApp(), OnboardingComponentProvider, HomeComponentProvider, ListC
     override fun homeComponent() = appComponent.homeComponent()
 
     override fun listComponent() = appComponent.listComponent()
+
+    override fun filmPageComponent(): FilmPageComponent = appComponent.filmPageComponent()
 }

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="action_global_list_nav_host" type="id"/>
+    <item name="action_global_film_page_navigation" type="id"/>
 </resources>

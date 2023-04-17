@@ -1,10 +1,9 @@
 package ru.skillbox.data.repositories
 
 import ru.skillbox.core.domain.entities.MainMovie
-import ru.skillbox.core.domain.entities.Movie
 import ru.skillbox.core.domain.entities.PremierMovie
 import ru.skillbox.data.repositories.interfaces.CinemaApi
-import ru.skillbox.feature_list.domain.repositories.MoviesRepository
+import ru.skillbox.feature_list.domain.MoviesRepository
 import java.time.Month
 import javax.inject.Inject
 

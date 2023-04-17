@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/homeFragment"
+        android:id="@+id/home_nav_host"
         android:icon="@drawable/bottom_navigation_home_icon_selector"
         android:title="@string/home_button_bottom_nav" />
     <item

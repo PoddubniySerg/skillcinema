@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="film_page_season_collection_title_text">Сезоны и серии</string>
+    <string name="film_page_season_collection_all_button_text">Все</string>
+    <string name="film_page_actors_collection_title_text">В фильме снимались</string>
+    <string name="film_page_staff_collection_title_text">Над фильмом работали</string>
+    <string name="film_page_gallery_title_text">Галерея</string>
+    <string name="film_page_related_movies_title_text">Похожие фильмы</string>
+    <string name="film_countries_length_age_limit_text">%s, %d ч %d мин, %s+</string>
+    <string name="series_seasons_item">%d сезон, %d серий</string>
+</resources>

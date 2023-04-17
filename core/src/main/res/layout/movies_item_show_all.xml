@@ -20,17 +20,17 @@
             android:layout_gravity="center"
             android:background="?attr/selectableItemBackground"
             android:gravity="center"
-            android:src="@drawable/movies_item_show_all_button_row_icon"
             tools:ignore="SpeakableTextPresentCheck" />
     </androidx.cardview.widget.CardView>
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/showAllItemText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fontFamily="@font/graphik"
         android:gravity="center"
-        android:text="@string/movies_show_all_item_text_view"
+        tools:text="Show all"
         android:textColor="@color/movies_item_show_all_text_color"
         android:textSize="12sp" />
 </androidx.appcompat.widget.LinearLayoutCompat>

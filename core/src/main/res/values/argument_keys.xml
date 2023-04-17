@@ -7,4 +7,5 @@
     <string name="collection_index_key" translatable="false">collection_index_key</string>
     <string name="country_id_key" translatable="false">country_id_by_name:%s</string>
     <string name="genre_id_key" translatable="false">genre_id_by_name:%s</string>
+    <string name="film_id_key" translatable="false">film_id</string>
 </resources>

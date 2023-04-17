@@ -10,7 +10,7 @@ object TranslatableNameProcessor {
         nameView.text = getName(translatable)
     }
 
-    private fun getName(translatable: TranslatableName): String {
+    fun getName(translatable: TranslatableName): String {
         return if (Locale.getDefault().language == "ru") {
             val name = translatable.nameRu
             if (name == null || name.isEmpty() || name.isBlank()) {

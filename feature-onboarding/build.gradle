@@ -35,7 +35,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
 //    tests
@@ -44,7 +44,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 //    fragments for viewModels (для работы с фрагментами)
     implementation 'androidx.fragment:fragment-ktx:1.5.6'
-    implementation 'androidx.core:core-ktx:1.9.0'
 //    Dagger 2 for DI
     implementation 'com.google.dagger:dagger:2.45'
 //    navigation

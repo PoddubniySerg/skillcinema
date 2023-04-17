@@ -1,8 +1,6 @@
 package ru.skillbox.data.repositories.interfaces
 
-import ru.skillbox.core.domain.entities.CountriesAndGenres
-import ru.skillbox.core.domain.entities.MainMovie
-import ru.skillbox.core.domain.entities.PremierMovie
+import ru.skillbox.core.domain.entities.*
 import java.time.Month
 
 interface CinemaApi {
@@ -18,4 +16,10 @@ interface CinemaApi {
     suspend fun getTop250(pageNumber: Int): List<MainMovie>
 
     suspend fun getTvSeries(pageNumber: Int): List<MainMovie>
+
+    suspend fun getFilmById(id: Long): MovieDetails
+
+    suspend fun getFilmStaff(id: Long): List<StaffItem>
+
+    suspend fun getSeriesSeasons(filmId: Long): List<SerialSeason>
 }
