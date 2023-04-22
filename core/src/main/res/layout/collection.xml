@@ -2,10 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="26dp"
-    android:layout_marginTop="36dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/nameCollection"
@@ -23,16 +21,18 @@
         android:id="@+id/buttonShowAll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="26dp"
         android:background="?attr/selectableItemBackground"
-        android:fontFamily="@font/graphik"
-        android:minWidth="24dp"
+        android:drawablePadding="0dp"
+        android:fontFamily="@font/graphik_medium"
+        android:gravity="end|center"
         android:minHeight="15dp"
+        android:layout_marginEnd="26dp"
         android:textAllCaps="false"
         android:textColor="@color/collection_item_title_show_all_text_color"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="@+id/nameCollection"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/nameCollection"
         tools:ignore="SpUsage,TextSizeCheck"
         tools:text="Show all" />
 
@@ -40,7 +40,6 @@
         android:id="@+id/collection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
