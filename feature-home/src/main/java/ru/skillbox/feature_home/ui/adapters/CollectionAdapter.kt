@@ -28,7 +28,7 @@ class CollectionAdapter(
         val binding =
             CollectionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val adapter =
-            MovieItemAdapter(showAllButtonIcon, showAllItemText, onItemClick) { onClickAllButton }
+            MovieItemAdapter(showAllButtonIcon, showAllItemText, onItemClick)
         return MoviesCollectionViewHolder(
             adapter,
             onClickAllButton,

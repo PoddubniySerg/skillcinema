@@ -37,6 +37,7 @@ class MoviesCollectionViewHolder(
         with(binding) {
             nameCollection.text = item.title
             setTextAllButton(buttonShowAll, item.movies.size)
+            adapter.setOnClickAllButton { onClickAllButton(item) }
             adapter.submitList(item.movies)
             buttonShowAll.setOnClickListener { onClickAllButton(item) }
         }

@@ -8,15 +8,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.skillbox.core.domain.entities.MovieDetails
-import ru.skillbox.core.domain.entities.StaffItem
 import ru.skillbox.core.domain.entities.StaffProfessionKey
 import ru.skillbox.core.utils.States
+import ru.skillbox.feature_film_page.models.MovieImagesGallery
+import ru.skillbox.feature_film_page.models.TranslatableMoviesCollection
 import ru.skillbox.feature_film_page.models.TranslatableSeason
 import ru.skillbox.feature_film_page.models.TranslatableStaffItem
 import ru.skillbox.feature_film_page.usecases.GetMovieDetailsUseCase
+import ru.skillbox.feature_film_page.usecases.GetMovieGalleryUseCase
 import ru.skillbox.feature_film_page.usecases.GetMovieStaffUseCase
+import ru.skillbox.feature_film_page.usecases.GetRelatedMoviesUseCase
 import ru.skillbox.feature_film_page.usecases.GetSeasonUseCase
 import ru.skillbox.feature_film_page.utils.MovieDetailsProcessor
+import ru.skillbox.feature_film_page.utils.RelatedMovieProcessor
 import ru.skillbox.feature_film_page.utils.SeriesSeasonProcessor
 import ru.skillbox.feature_film_page.utils.StaffItemProcessor
 import javax.inject.Inject
@@ -24,7 +28,9 @@ import javax.inject.Inject
 class FilmPageViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getMovieStaffUseCase: GetMovieStaffUseCase,
-    private val getSeasonUseCase: GetSeasonUseCase
+    private val getSeasonUseCase: GetSeasonUseCase,
+    private val getMovieGalleryUseCase: GetMovieGalleryUseCase,
+    private val getRelatedMoviesUseCase: GetRelatedMoviesUseCase
 ) : ViewModel() {
 
     private val _stateMutableStateFlow = MutableStateFlow(States.COMPLETE)
@@ -33,14 +39,20 @@ class FilmPageViewModel @Inject constructor(
     private val _movieDetailsChannel = Channel<MovieDetails>()
     val movieDetailsFlow = _movieDetailsChannel.receiveAsFlow()
 
-    private val _seasonsChannel = Channel<List<TranslatableSeason>>()
-    val seasonsFlow = _seasonsChannel.receiveAsFlow()
-
     private val _actorsChannel = Channel<List<TranslatableStaffItem>>()
     val actorsFlow = _actorsChannel.receiveAsFlow()
 
     private val _staffChannel = Channel<List<TranslatableStaffItem>>()
     val staffFlow = _staffChannel.receiveAsFlow()
+
+    private val _seasonsChannel = Channel<List<TranslatableSeason>>()
+    val seasonsFlow = _seasonsChannel.receiveAsFlow()
+
+    private val _galleryChannel = Channel<MovieImagesGallery>()
+    val galleryFlow = _galleryChannel.receiveAsFlow()
+
+    private val _relatedMoviesChannel = Channel<TranslatableMoviesCollection>()
+    val relatedMoviesFlow = _relatedMoviesChannel.receiveAsFlow()
 
     fun getMovieDetails(id: Long) {
         viewModelScope.launch {
@@ -48,8 +60,8 @@ class FilmPageViewModel @Inject constructor(
                 _stateMutableStateFlow.value = States.LOADING
                 getMovieDescription(id)
                 getStaff(id)
-//                TODO get gallery
-//                TODO get похожие фильмы
+                getGallery(id)
+                getRelatedMovies(id)
             } catch (ex: Exception) {
 //            TODO exception handler
                 throw ex
@@ -58,8 +70,6 @@ class FilmPageViewModel @Inject constructor(
             }
         }
     }
-
-    fun getStaffInfo(staffItem: StaffItem) {}
 
     private suspend fun getMovieDescription(id: Long) {
         val movieDetails = getMovieDetailsUseCase.execute(id)
@@ -94,5 +104,16 @@ class FilmPageViewModel @Inject constructor(
         val translatableSeasons =
             seasons.map { SeriesSeasonProcessor.convertToTranslatableSeason(it) }
         _seasonsChannel.send(translatableSeasons)
+    }
+
+    private suspend fun getGallery(filmId: Long) {
+        val gallery = getMovieGalleryUseCase.execute(filmId)
+        _galleryChannel.send(gallery)
+    }
+
+    private suspend fun getRelatedMovies(filmId: Long) {
+        val relatedMovies = getRelatedMoviesUseCase.execute(filmId)
+        val translatableRelatedMovies = RelatedMovieProcessor.convertToTranslatable(relatedMovies)
+        _relatedMoviesChannel.send(translatableRelatedMovies)
     }
 }

@@ -52,4 +52,12 @@ interface KinopoiskApi {
     @Headers("X-API-KEY: ${Secret.API_KEY}")
     @GET("/api/v2.2/films/{id}/seasons")
     suspend fun getSeasons(@Path("id") id: Int): Response<SeasonResponseDto>
+
+    @Headers("X-API-KEY: ${Secret.API_KEY}")
+    @GET("/api/v2.2/films/{id}/images")
+    suspend fun getGallery(@Path("id") id: Int, @Query("page") page: Int): Response<MovieImagesDto>
+
+    @Headers("X-API-KEY: ${Secret.API_KEY}")
+    @GET("/api/v2.2/films/{id}/similars")
+    suspend fun getSimilars(@Path("id") id: Int): Response<RelatedMoviesDto>
 }

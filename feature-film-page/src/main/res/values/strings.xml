@@ -6,6 +6,7 @@
     <string name="film_page_staff_collection_title_text">We worked on the film</string>
     <string name="film_page_gallery_title_text">Gallery</string>
     <string name="film_page_related_movies_title_text">Related movies</string>
+    <string name="film_page_year_genres_seasons_text">%s, %d season</string>
     <string name="film_countries_length_age_limit_text">%s, %d h %d min, %s+</string>
     <string name="series_seasons_item">%d season, %d series</string>
 </resources>

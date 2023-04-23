@@ -22,4 +22,8 @@ interface CinemaApi {
     suspend fun getFilmStaff(id: Long): List<StaffItem>
 
     suspend fun getSeriesSeasons(filmId: Long): List<SerialSeason>
+
+    suspend fun getGallery(filmId: Long, page: Int): MovieImages
+
+    suspend fun getRelatedMovies(filmId: Long): RelatedMovies
 }

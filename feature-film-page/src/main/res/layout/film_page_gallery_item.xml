@@ -2,16 +2,17 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:clickable="true"
-    app:cardCornerRadius="4dp"
-    android:background="?attr/selectableItemBackground"
-    android:layout_marginEnd="8dp"
     android:layout_width="192dp"
-    android:layout_height="108dp">
+    android:layout_height="108dp"
+    android:layout_marginEnd="8dp"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    app:cardCornerRadius="4dp">
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        tools:src="@drawable/film_page_gallery_place_holder"
+        android:layout_height="match_parent"
         android:scaleType="center"
-        android:layout_height="match_parent"/>
+        tools:src="@drawable/film_page_gallery_place_holder" />
 </androidx.cardview.widget.CardView>

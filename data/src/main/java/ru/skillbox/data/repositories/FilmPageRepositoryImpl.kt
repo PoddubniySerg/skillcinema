@@ -1,6 +1,8 @@
 package ru.skillbox.data.repositories
 
 import ru.skillbox.core.domain.entities.MovieDetails
+import ru.skillbox.core.domain.entities.MovieImages
+import ru.skillbox.core.domain.entities.RelatedMovies
 import ru.skillbox.core.domain.entities.SerialSeason
 import ru.skillbox.core.domain.entities.StaffItem
 import ru.skillbox.data.repositories.interfaces.CinemaApi
@@ -23,5 +25,11 @@ class FilmPageRepositoryImpl @Inject constructor(
         return cinemaApi.getSeriesSeasons(filmId)
     }
 
+    override suspend fun getGallery(filmId: Long): MovieImages {
+        return cinemaApi.getGallery(filmId, page = 1)
+    }
 
+    override suspend fun getSimilars(filmId: Long): RelatedMovies {
+        return cinemaApi.getRelatedMovies(filmId)
+    }
 }

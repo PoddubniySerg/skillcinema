@@ -16,11 +16,12 @@ import ru.skillbox.core.domain.entities.Movie
 import ru.skillbox.core.ui.viewholders.MovieViewHolder
 
 class MovieItemAdapter(
-    private val allButtonIcon: Drawable,
-    private val allButtonText: String,
-    private val onItemClick: (Movie) -> Unit,
-    private val onClickAllButton: () -> Unit
+    private val allButtonIcon: Drawable?,
+    private val allButtonText: String?,
+    private val onItemClick: (Movie) -> Unit
 ) : ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffUtilCallback()) {
+
+    private var onClickAllButton: (() -> Unit)? = null
 
     companion object {
         fun verticalDividerItemDecoration(context: Context): List<DividerItemDecoration> {
@@ -48,6 +49,7 @@ class MovieItemAdapter(
                     )
                 )
             }
+
             else -> {
                 return ShowAllViewHolder(
                     MoviesItemShowAllBinding.inflate(
@@ -68,17 +70,31 @@ class MovieItemAdapter(
     }
 
     override fun getItemCount(): Int {
-        val additionalElementsCount = 1
+        val additionalElementsCount =
+            if (allButtonIcon == null) {
+                0
+            } else {
+                1
+            }
         return super.getItemCount() + additionalElementsCount
     }
 
     override fun getItemViewType(position: Int): Int {
-        val lastIndexItems = itemCount - 1
+        val lastIndexItems =
+            if (allButtonIcon == null) {
+                itemCount
+            } else {
+                itemCount - 1
+            }
         return if (position < lastIndexItems) {
             R.layout.movies_item_movie
         } else {
             R.layout.movies_item_show_all
         }
+    }
+
+    fun setOnClickAllButton(onClickAllButton: () -> Unit) {
+        this.onClickAllButton = onClickAllButton
     }
 
     private fun inflateMovie(position: Int, holder: MovieViewHolder) {
@@ -87,10 +103,13 @@ class MovieItemAdapter(
     }
 
     private fun inflateShowAllItem(binding: MoviesItemShowAllBinding) {
+        if (onClickAllButton == null) {
+            return
+        }
         with(binding) {
             buttonShowAllMovies.setImageDrawable(allButtonIcon)
             showAllItemText.text = allButtonText
-            buttonShowAllMovies.setOnClickListener { onClickAllButton() }
+            root.setOnClickListener { onClickAllButton!!.invoke() }
         }
     }
 }

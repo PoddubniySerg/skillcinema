@@ -1,7 +1,14 @@
 package ru.skillbox.data.api
 
 import retrofit2.Response
-import ru.skillbox.core.domain.entities.*
+import ru.skillbox.core.domain.entities.CountriesAndGenres
+import ru.skillbox.core.domain.entities.MainMovie
+import ru.skillbox.core.domain.entities.MovieDetails
+import ru.skillbox.core.domain.entities.MovieImages
+import ru.skillbox.core.domain.entities.PremierMovie
+import ru.skillbox.core.domain.entities.RelatedMovies
+import ru.skillbox.core.domain.entities.SerialSeason
+import ru.skillbox.core.domain.entities.StaffItem
 import ru.skillbox.data.exceptions.NetworkResponseException
 import ru.skillbox.data.repositories.interfaces.CinemaApi
 import java.time.Month
@@ -66,6 +73,16 @@ class CinemaApiImpl @Inject constructor(
     override suspend fun getSeriesSeasons(filmId: Long): List<SerialSeason> {
         val response = source.getSeasons(filmId.toInt())
         return response.body()?.items ?: throwNetworkResponseException(response)
+    }
+
+    override suspend fun getGallery(filmId: Long, page: Int): MovieImages {
+        val response = source.getGallery(filmId.toInt(), page)
+        return response.body() ?: throwNetworkResponseException(response)
+    }
+
+    override suspend fun getRelatedMovies(filmId: Long): RelatedMovies {
+        val response = source.getSimilars(filmId.toInt())
+        return response.body() ?: throwNetworkResponseException(response)
     }
 
     private fun throwNetworkResponseException(response: Response<*>): Nothing {

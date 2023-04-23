@@ -12,16 +12,22 @@ import com.bumptech.glide.Glide
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import ru.skillbox.core.domain.entities.Movie
 import ru.skillbox.core.domain.entities.MovieDetails
+import ru.skillbox.core.domain.entities.MovieImage
 import ru.skillbox.core.domain.entities.StaffItem
 import ru.skillbox.core.ui.fragments.BindFragment
 import ru.skillbox.core.utils.States
 import ru.skillbox.feature_film_page.R
 import ru.skillbox.feature_film_page.databinding.FilmPageFragmentBinding
 import ru.skillbox.feature_film_page.di.FilmPageComponentProvider
+import ru.skillbox.feature_film_page.models.MovieImagesGallery
+import ru.skillbox.feature_film_page.models.TranslatableMoviesCollection
 import ru.skillbox.feature_film_page.models.TranslatableSeason
 import ru.skillbox.feature_film_page.models.TranslatableStaffItem
 import ru.skillbox.feature_film_page.ui.adapters.ActorsAdapter
+import ru.skillbox.feature_film_page.ui.adapters.GalleryAdapter
+import ru.skillbox.feature_film_page.ui.adapters.RelatedMoviesAdapter
 import ru.skillbox.feature_film_page.ui.adapters.SeasonAdapter
 import ru.skillbox.feature_film_page.ui.adapters.StaffAdapter
 import ru.skillbox.feature_film_page.ui.viewmodels.FilmPageViewModel
@@ -36,9 +42,11 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
             .filmPageViewModelFactory()
     }
     private lateinit var layoutTransitionProcessor: LayoutTransitionProcessor
+    private lateinit var relatedMoviesAdapter: RelatedMoviesAdapter
     private lateinit var seasonAdapter: SeasonAdapter
     private lateinit var staffAdapter: StaffAdapter
     private lateinit var actorsAdapter: ActorsAdapter
+    private lateinit var galleryAdapter: GalleryAdapter
     private var isShortDescriptionCollapsed = true
     private var isFullDescriptionCollapsed = true
 
@@ -46,7 +54,6 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
         super.onViewCreated(view, savedInstanceState)
 
         initToolbar()
-//        initAdapters()
         initObservers()
         initLayoutTransitionProcessor()
         initMovieDetails()
@@ -68,40 +75,31 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
             bindMovieDetails(filmDetails)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-//        viewModel.seasonsFlow.onEach { seasons ->
-//            handleSeasons(seasons)
-//        }.launchIn(viewLifecycleOwner.lifecycleScope)
-//
-//        viewModel.staffFlow.onEach { staffItems ->
-//            handleStaffCollection(staffItems, false)
-//        }.launchIn(viewLifecycleOwner.lifecycleScope)
-//
-//        viewModel.actorsFlow.onEach { actors ->
-//            handleStaffCollection(actors, true)
-//        }.launchIn(viewLifecycleOwner.lifecycleScope)
-
         combine(
             viewModel.seasonsFlow,
             viewModel.staffFlow,
-            viewModel.actorsFlow
-        ) { seasons, staff, actors ->
+            viewModel.actorsFlow,
+            viewModel.galleryFlow,
+            viewModel.relatedMoviesFlow
+        ) { seasons, staff, actors, gallery, relatedMovies ->
             initAdapters(seasons.isNotEmpty())
             handleSeasons(seasons)
             handleStaffCollection(actors, true)
             handleStaffCollection(staff, false)
+            handleGallery(gallery)
+            handleRelatedMovies(relatedMovies)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun initAdapters(isSerial: Boolean) {
-        initStaffAdapter()
-        initActorsAdapter()
-        val adapter =
-            if (isSerial) {
-                initSeasonAdapter()
-                ConcatAdapter(seasonAdapter, actorsAdapter, staffAdapter)
-            } else {
-                ConcatAdapter(actorsAdapter, staffAdapter)
-            }
+        val adapter = ConcatAdapter()
+        if (isSerial) {
+            adapter.addAdapter(initSeasonAdapter())
+        }
+        adapter.addAdapter(initActorsAdapter())
+        adapter.addAdapter(initStaffAdapter())
+        adapter.addAdapter(initGalleryAdapter())
+        adapter.addAdapter(initRelatedMoviesAdapter())
         binding.filmPageCollections.adapter = adapter
     }
 
@@ -118,7 +116,7 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
         viewModel.getMovieDetails(id)
     }
 
-    private fun initSeasonAdapter() {
+    private fun initSeasonAdapter(): SeasonAdapter {
         val title = resources.getString(R.string.film_page_season_collection_title_text)
         val allButtonText =
             resources.getString(R.string.film_page_season_collection_all_button_text)
@@ -128,16 +126,36 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
                 allButtonText,
                 { onClickAllSeasons(it) },
                 { onSeasonItemClick(it) })
+        return seasonAdapter
     }
 
-    private fun initStaffAdapter() {
+    private fun initStaffAdapter(): StaffAdapter {
         val title = resources.getString(R.string.film_page_staff_collection_title_text)
         staffAdapter = StaffAdapter(title, { onClickAllStaff(it) }, { onStaffItemClick(it) })
+        return staffAdapter
     }
 
-    private fun initActorsAdapter() {
+    private fun initActorsAdapter(): ActorsAdapter {
         val title = resources.getString(R.string.film_page_actors_collection_title_text)
         actorsAdapter = ActorsAdapter(title, { onClickAllStaff(it) }, { onStaffItemClick(it) })
+        return actorsAdapter
+    }
+
+    private fun initGalleryAdapter(): GalleryAdapter {
+        val title = resources.getString(R.string.film_page_gallery_title_text)
+        galleryAdapter =
+            GalleryAdapter(title, { onClickAllGallery(it) }, { onGalleryImageClick(it) })
+        return galleryAdapter
+    }
+
+    private fun initRelatedMoviesAdapter(): RelatedMoviesAdapter {
+        val title = resources.getString(R.string.film_page_related_movies_title_text)
+        relatedMoviesAdapter =
+            RelatedMoviesAdapter(
+                title,
+                { onRelatedMovieClick(it) },
+                { onClickAllRelationMovies(it) })
+        return relatedMoviesAdapter
     }
 
     private fun initListeners(movieDetails: MovieDetails) {
@@ -161,7 +179,7 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
         setCountriesLengthAgeLimit(movieDetails)
 
         val shortText = movieDetails.shortDescription
-        if (shortText == null || shortText.isEmpty()) {
+        if (shortText.isNullOrEmpty()) {
             binding.descriptionShortContentTextView.visibility = View.GONE
         } else {
             binding.descriptionShortContentTextView.text =
@@ -169,7 +187,7 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
         }
 
         val longText = movieDetails.description
-        if (longText == null || longText.isEmpty()) {
+        if (longText.isNullOrEmpty()) {
             binding.descriptionContentTextView.visibility = View.GONE
         } else {
             binding.descriptionContentTextView.text = layoutTransitionProcessor.cutText(longText)
@@ -190,6 +208,12 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
         TODO("Not yet implemented")
     }
 
+    private fun onGalleryImageClick(image: MovieImage) {
+        TODO("Not yet implemented")
+    }
+
+    private fun onRelatedMovieClick(movie: Movie) {}
+
     private fun onClickAllStaff(all: List<StaffItem>) {
         TODO("Not yet implemented")
     }
@@ -198,11 +222,23 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
         TODO("Not yet implemented")
     }
 
+    private fun onClickAllGallery(gallery: MovieImagesGallery) {
+        TODO("Not yet implemented")
+    }
+
+    private fun onClickAllRelationMovies(collection: TranslatableMoviesCollection) {}
+
     @SuppressLint("NotifyDataSetChanged")
     private fun handleSeasons(seasons: List<TranslatableSeason>) {
         if (seasons.isNotEmpty()) {
             seasonAdapter.setSeasons(seasons)
             seasonAdapter.notifyDataSetChanged()
+            val text = String.format(
+                resources.getString(R.string.film_page_year_genres_seasons_text),
+                binding.filmYearGenres.text.toString(),
+                seasons.size
+            )
+            binding.filmYearGenres.text = text
         }
     }
 
@@ -218,6 +254,18 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
             staffAdapter.setItems(staffCollection)
             staffAdapter.notifyDataSetChanged()
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun handleGallery(gallery: MovieImagesGallery) {
+        galleryAdapter.setGallery(gallery)
+        galleryAdapter.notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun handleRelatedMovies(relatedMovies: TranslatableMoviesCollection) {
+        relatedMoviesAdapter.setCollection(relatedMovies)
+        relatedMoviesAdapter.notifyDataSetChanged()
     }
 
     private fun handleState(state: States) {
