@@ -23,7 +23,7 @@ class MovieDetailsDto(
     @Json(name = "serial") override val isSerial: Boolean?,
     @Json(name = "imdbId") val imdbId: String?,
     @Json(name = "coverUrl") override val coverUrl: String?,
-    @Json(name = "posterUrlPreview") val posterUrlPreview: String?,
+    @Json(name = "posterUrlPreview") override val posterUrlPreview: String?,
     @Json(name = "reviewsCount") val reviewsCount: Int?,
     @Json(name = "ratingGoodReview") val ratingGoodReview: Double?,
     @Json(name = "ratingGoodReviewVoteCount") val ratingGoodReviewVoteCount: Int?,

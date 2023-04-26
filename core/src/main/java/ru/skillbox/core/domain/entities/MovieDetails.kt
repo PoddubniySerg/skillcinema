@@ -8,6 +8,7 @@ interface MovieDetails {
     val nameOriginal: String?
     val posterUrl: String?
     val coverUrl: String?
+    val posterUrlPreview: String?
     val logoUrl: String?
     val ratingKinopoisk: Double?
     val year: Int?

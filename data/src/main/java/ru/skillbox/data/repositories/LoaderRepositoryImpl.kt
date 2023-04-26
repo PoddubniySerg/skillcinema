@@ -1,19 +1,41 @@
 package ru.skillbox.data.repositories
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ru.skillbox.core.domain.entities.CountriesAndGenres
 import ru.skillbox.core.domain.entities.MainMovie
 import ru.skillbox.core.domain.entities.PremierMovie
+import ru.skillbox.core.utils.RequiredCollections
 import ru.skillbox.data.repositories.interfaces.CinemaApi
+import ru.skillbox.data.repositories.interfaces.DeviceDao
 import ru.skillbox.feature_onboarding.domain.repositories.LoaderRepository
 import java.time.Month
 import javax.inject.Inject
 
 open class LoaderRepositoryImpl @Inject constructor(
-    private val cinemaApi: CinemaApi
+    private val cinemaApi: CinemaApi,
+    private val deviceDao: DeviceDao
 ) : LoaderRepository {
 
     companion object {
-        const val DEFAULT_PAGE_NUMBER = 1
+        private const val DEFAULT_PAGE_NUMBER = 1
+    }
+
+    init {
+        runBlocking {
+            CoroutineScope(Dispatchers.IO).launch {
+                val favoriteName = RequiredCollections.FAVOURITE_COLLECTION.name
+                val willViewedName = RequiredCollections.WILL_VIEWED_COLLECTION.name
+                if (deviceDao.getCountCollectionByName(favoriteName) == 0) {
+                    deviceDao.newCollection(favoriteName)
+                }
+                if (deviceDao.getCountCollectionByName(willViewedName) == 0) {
+                    deviceDao.newCollection(willViewedName)
+                }
+            }.join()
+        }
     }
 
     override suspend fun getCountriesAndGenres(): CountriesAndGenres {

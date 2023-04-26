@@ -5,9 +5,15 @@ import dagger.Provides
 import ru.skillbox.data.api.CinemaApiImpl
 import ru.skillbox.data.api.CinemaApiSource
 import ru.skillbox.data.api.KinopoiskApi
+import ru.skillbox.data.device.dao.DeviceDaoImpl
 import ru.skillbox.data.device.sharedpreferences.DeviceMemoryImpl
-import ru.skillbox.data.repositories.*
+import ru.skillbox.data.repositories.FilmPageRepositoryImpl
+import ru.skillbox.data.repositories.HomeRepositoryImpl
+import ru.skillbox.data.repositories.ListPageMoviesRepository
+import ru.skillbox.data.repositories.LoaderRepositoryImpl
+import ru.skillbox.data.repositories.OnboardingRepositoryImpl
 import ru.skillbox.data.repositories.interfaces.CinemaApi
+import ru.skillbox.data.repositories.interfaces.DeviceDao
 import ru.skillbox.data.repositories.interfaces.DeviceMemory
 import ru.skillbox.feature_film_page.repositories.FilmPageRepository
 import ru.skillbox.feature_home.domain.HomeRepository
@@ -69,6 +75,12 @@ class DataModule {
     @DataScope
     fun provideFilmPageRepository(filmPageRepository: FilmPageRepositoryImpl): FilmPageRepository {
         return filmPageRepository
+    }
+
+    @Provides
+    @DataScope
+    fun provideDeviceDao(deviceDaoImpl: DeviceDaoImpl): DeviceDao {
+        return deviceDaoImpl
     }
 }
 

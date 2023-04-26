@@ -2,6 +2,7 @@ package ru.skillbox.feature_film_page.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -9,16 +10,19 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.skillbox.core.domain.entities.MovieDetails
 import ru.skillbox.core.domain.entities.StaffProfessionKey
+import ru.skillbox.core.utils.RequiredCollections
 import ru.skillbox.core.utils.States
 import ru.skillbox.feature_film_page.models.MovieImagesGallery
 import ru.skillbox.feature_film_page.models.TranslatableMoviesCollection
 import ru.skillbox.feature_film_page.models.TranslatableSeason
 import ru.skillbox.feature_film_page.models.TranslatableStaffItem
+import ru.skillbox.feature_film_page.usecases.GetMovieCollectionsUseCase
 import ru.skillbox.feature_film_page.usecases.GetMovieDetailsUseCase
 import ru.skillbox.feature_film_page.usecases.GetMovieGalleryUseCase
 import ru.skillbox.feature_film_page.usecases.GetMovieStaffUseCase
 import ru.skillbox.feature_film_page.usecases.GetRelatedMoviesUseCase
 import ru.skillbox.feature_film_page.usecases.GetSeasonUseCase
+import ru.skillbox.feature_film_page.usecases.SetFavouriteUseCase
 import ru.skillbox.feature_film_page.utils.MovieDetailsProcessor
 import ru.skillbox.feature_film_page.utils.RelatedMovieProcessor
 import ru.skillbox.feature_film_page.utils.SeriesSeasonProcessor
@@ -30,8 +34,12 @@ class FilmPageViewModel @Inject constructor(
     private val getMovieStaffUseCase: GetMovieStaffUseCase,
     private val getSeasonUseCase: GetSeasonUseCase,
     private val getMovieGalleryUseCase: GetMovieGalleryUseCase,
-    private val getRelatedMoviesUseCase: GetRelatedMoviesUseCase
+    private val getRelatedMoviesUseCase: GetRelatedMoviesUseCase,
+    private val setFavouriteUseCase: SetFavouriteUseCase,
+    private val getMovieCollectionsUseCase: GetMovieCollectionsUseCase
 ) : ViewModel() {
+
+    private var movieDetails: MovieDetails? = null
 
     private val _stateMutableStateFlow = MutableStateFlow(States.COMPLETE)
     val stateFlow get() = _stateMutableStateFlow.asStateFlow()
@@ -54,6 +62,9 @@ class FilmPageViewModel @Inject constructor(
     private val _relatedMoviesChannel = Channel<TranslatableMoviesCollection>()
     val relatedMoviesFlow = _relatedMoviesChannel.receiveAsFlow()
 
+    private val _isMovieFavouriteChannel = Channel<Boolean>()
+    val isMovieFavouriteFlow = _isMovieFavouriteChannel.receiveAsFlow()
+
     fun getMovieDetails(id: Long) {
         viewModelScope.launch {
             try {
@@ -71,11 +82,22 @@ class FilmPageViewModel @Inject constructor(
         }
     }
 
+    fun setFavourite() {
+        if (movieDetails != null) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val isMovieFavourite = setFavouriteUseCase.execute(movieDetails!!)
+                _isMovieFavouriteChannel.send(isMovieFavourite)
+            }
+        }
+    }
+
     private suspend fun getMovieDescription(id: Long) {
-        val movieDetails = getMovieDetailsUseCase.execute(id)
-        val movieDetailsConverted = MovieDetailsProcessor.convertToMovieDetailsDto(movieDetails)
+        movieDetails = getMovieDetailsUseCase.execute(id)
+        val movieDetailsConverted = MovieDetailsProcessor.convertToMovieDetailsDto(movieDetails!!)
+        val collections = getMovieCollectionsUseCase.execute(id)
         getSeasons(movieDetailsConverted)
         _movieDetailsChannel.send(movieDetailsConverted)
+        _isMovieFavouriteChannel.send(collections.contains(RequiredCollections.FAVOURITE_COLLECTION.name))
     }
 
     private suspend fun getStaff(id: Long) {

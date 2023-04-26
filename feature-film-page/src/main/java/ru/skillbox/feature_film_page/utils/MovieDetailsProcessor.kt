@@ -32,7 +32,8 @@ object MovieDetailsProcessor {
             countries,
             genres,
             movieDetails.isSerial,
-            movieDetails.coverUrl
+            movieDetails.coverUrl,
+            movieDetails.posterUrlPreview
         )
     }
 

@@ -89,6 +89,10 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
             handleGallery(gallery)
             handleRelatedMovies(relatedMovies)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.isMovieFavouriteFlow.onEach { isMovieFavourite ->
+            binding.filmPageFavoriteButton.isSelected = isMovieFavourite
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun initAdapters(isSerial: Boolean) {
@@ -160,6 +164,7 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
 
     private fun initListeners(movieDetails: MovieDetails) {
         with(binding) {
+            filmPageFavoriteButton.setOnClickListener { viewModel.setFavourite() }
             descriptionShortContentTextView.setOnClickListener { shortDescriptionTextView ->
                 val shortText = movieDetails.shortDescription ?: ""
                 onDescriptionClick(shortDescriptionTextView, isShortDescriptionCollapsed, shortText)
@@ -270,8 +275,19 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
 
     private fun handleState(state: States) {
         when (state) {
-            States.LOADING -> binding.progressBarFilmPage.visibility = View.VISIBLE
-            States.COMPLETE -> binding.progressBarFilmPage.visibility = View.GONE
+            States.LOADING -> {
+                with(binding) {
+                    progressBarFilmPage.visibility = View.VISIBLE
+                    filmPageFavoriteButton.isEnabled = false
+                }
+            }
+
+            States.COMPLETE -> {
+                with(binding) {
+                    progressBarFilmPage.visibility = View.GONE
+                    filmPageFavoriteButton.isEnabled = true
+                }
+            }
         }
     }
 

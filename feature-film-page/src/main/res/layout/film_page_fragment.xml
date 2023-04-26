@@ -106,16 +106,16 @@
                     app:layout_constraintVertical_bias="0.97">
 
                     <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/filmPageFavoriteButtom"
+                        android:id="@+id/filmPageFavoriteButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:background="?attr/selectableItemBackground"
-                        android:src="@drawable/film_page_toolbar_favorite_icon"
+                        android:src="@drawable/film_page_toolbar_favorite_icon_selector"
                         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/filmPageWillViewButtom"
+                        android:id="@+id/filmPageWillViewButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
@@ -124,7 +124,7 @@
                         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/filmPageSeenButtom"
+                        android:id="@+id/filmPageSeenButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
@@ -133,7 +133,7 @@
                         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck,ImageContrastCheck,ImageContrastCheck,ImageContrastCheck,ImageContrastCheck" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/filmPageShareButtom"
+                        android:id="@+id/filmPageShareButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
@@ -142,7 +142,7 @@
                         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/filmPageShowMoreButtom"
+                        android:id="@+id/filmPageShowMoreButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"

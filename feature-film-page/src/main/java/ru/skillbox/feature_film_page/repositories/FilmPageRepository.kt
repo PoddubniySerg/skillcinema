@@ -17,4 +17,8 @@ interface FilmPageRepository {
     suspend fun getGallery(filmId: Long): MovieImages
 
     suspend fun getSimilars(filmId: Long): RelatedMovies
+
+    suspend fun setFavourite(movie: MovieDetails): Boolean
+
+    suspend fun getCollections(filmId: Long): List<String>
 }

@@ -21,7 +21,8 @@ class MovieDetailsDto(
     override val countries: List<CountryObjectDto>?,
     override val genres: List<GenreObjectDto>?,
     override val isSerial: Boolean?,
-    override val coverUrl: String?
+    override val coverUrl: String?,
+    override val posterUrlPreview: String?
 ) : MovieDetails, Parcelable, TranslatableName {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -39,6 +40,7 @@ class MovieDetailsDto(
         parcel.createTypedArrayList(CountryObjectDto),
         parcel.createTypedArrayList(GenreObjectDto),
         parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+        parcel.readString(),
         parcel.readString()
     )
 
@@ -59,6 +61,7 @@ class MovieDetailsDto(
         parcel.writeParcelableArray(genres?.toTypedArray(), flags)
         parcel.writeValue(isSerial)
         parcel.writeString(coverUrl)
+        parcel.writeString(posterUrlPreview)
     }
 
     override fun describeContents(): Int {
