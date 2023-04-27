@@ -39,6 +39,14 @@ class FilmPageRepositoryImpl @Inject constructor(
         return deviceDao.setFavourite(movie)
     }
 
+    override suspend fun setWillView(movie: MovieDetails): Boolean {
+        return deviceDao.setWillView(movie)
+    }
+
+    override suspend fun setViewed(movie: MovieDetails): Boolean {
+        return deviceDao.setViewed(movie)
+    }
+
     override suspend fun getCollections(filmId: Long): List<String> {
         return deviceDao.getCollections(filmId)
     }

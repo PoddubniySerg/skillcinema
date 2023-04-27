@@ -20,5 +20,5 @@ import ru.skillbox.data.device.dao.dto.MoviesGenresCrossRef
 )
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun accountPageDao(): DaoRepository
+    abstract fun dbClient(): DbClient
 }

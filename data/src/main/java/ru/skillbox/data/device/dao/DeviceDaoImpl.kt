@@ -13,23 +13,41 @@ import javax.inject.Inject
 
 class DeviceDaoImpl @Inject constructor() : DeviceDao {
 
-    private val daoRepository = DataApp.getDataBase().accountPageDao()
-
-    override suspend fun getCountCollectionByName(name: String): Int {
-        return daoRepository.getCountCollectionByName(name)
-    }
+    private val dbClient = DataApp.getDataBase().dbClient()
 
     override suspend fun newCollection(name: String) {
         val collection = CollectionDao(name)
-        daoRepository.saveCollection(collection)
+        dbClient.saveCollection(collection)
     }
 
     override suspend fun setFavourite(movie: MovieDetails): Boolean {
         val collection = RequiredCollections.FAVOURITE_COLLECTION.name
-        val isMovieFavourite = daoRepository.isCollectionContainMovie(collection, movie.id)
+        return setCollection(movie, collection)
+    }
+
+    override suspend fun setWillView(movie: MovieDetails): Boolean {
+        val collection = RequiredCollections.WILL_VIEW_COLLECTION.name
+        return setCollection(movie, collection)
+    }
+
+    override suspend fun setViewed(movie: MovieDetails): Boolean {
+        val collection = RequiredCollections.VIEWED_COLLECTION.name
+        return setCollection(movie, collection)
+    }
+
+    override suspend fun getCollections(filmId: Long): List<String> {
+        return dbClient.getMovieWithCollections(filmId)?.collections?.map { it.name } ?: emptyList()
+    }
+
+    override suspend fun isCollectionExist(name: String): Boolean {
+        return dbClient.isCollectionExist(name)
+    }
+
+    private suspend fun setCollection(movie: MovieDetails, collection: String): Boolean {
+        val isCollectionContainMovie = dbClient.isCollectionContainMovie(collection, movie.id)
         val relation = CollectionAndMoviesCrossRef(collection, movie.id)
-        return if (isMovieFavourite) {
-            daoRepository.deleteCollectionMovieRelation(relation)
+        return if (isCollectionContainMovie) {
+            dbClient.deleteCollectionMovieRelation(relation)
             false
         } else {
             saveMovieInCollection(movie, collection, relation)
@@ -37,24 +55,20 @@ class DeviceDaoImpl @Inject constructor() : DeviceDao {
         }
     }
 
-    override suspend fun getCollections(filmId: Long): List<String> {
-        return daoRepository.getMovieWithCollections(filmId)?.collections?.map { it.name } ?: emptyList()
-    }
-
     private suspend fun saveMovieInCollection(
         movie: MovieDetails,
         collection: String,
         relation: CollectionAndMoviesCrossRef
     ) {
-        val isMovieNotExist = !daoRepository.isMovieExist(movie.id)
+        val isMovieNotExist = !dbClient.isMovieExist(movie.id)
         if (isMovieNotExist) {
             saveMovie(movie)
         }
-        val isCollectionNotExist = !daoRepository.isCollectionExist(collection)
+        val isCollectionNotExist = !dbClient.isCollectionExist(collection)
         if (isCollectionNotExist) {
             saveCollection(collection)
         }
-        daoRepository.setCollectionMovieRelation(relation)
+        dbClient.setCollectionMovieRelation(relation)
     }
 
     private suspend fun saveMovie(movie: MovieDetails) {
@@ -72,19 +86,19 @@ class DeviceDaoImpl @Inject constructor() : DeviceDao {
             movie.posterUrl,
             movie.posterUrlPreview
         )
-        daoRepository.saveMovie(movieDao)
+        dbClient.saveMovie(movieDao)
         movie.genres?.forEach {
             val genre = it.genre
             if (genre != null) {
-                daoRepository.saveGenre(GenreDao(genre))
+                dbClient.saveGenre(GenreDao(genre))
                 val relationGenre = MoviesGenresCrossRef(movie.id, genre)
-                daoRepository.setMovieGenreRelation(relationGenre)
+                dbClient.setMovieGenreRelation(relationGenre)
             }
         }
     }
 
     private suspend fun saveCollection(collection: String) {
         val collectionDao = CollectionDao(collection)
-        daoRepository.saveCollection(collectionDao)
+        dbClient.saveCollection(collectionDao)
     }
 }

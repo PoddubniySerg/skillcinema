@@ -27,12 +27,16 @@ open class LoaderRepositoryImpl @Inject constructor(
         runBlocking {
             CoroutineScope(Dispatchers.IO).launch {
                 val favoriteName = RequiredCollections.FAVOURITE_COLLECTION.name
-                val willViewedName = RequiredCollections.WILL_VIEWED_COLLECTION.name
-                if (deviceDao.getCountCollectionByName(favoriteName) == 0) {
+                val willViewName = RequiredCollections.WILL_VIEW_COLLECTION.name
+                val viewedName = RequiredCollections.VIEWED_COLLECTION.name
+                if (!deviceDao.isCollectionExist(favoriteName)) {
                     deviceDao.newCollection(favoriteName)
                 }
-                if (deviceDao.getCountCollectionByName(willViewedName) == 0) {
-                    deviceDao.newCollection(willViewedName)
+                if (!deviceDao.isCollectionExist(willViewName)) {
+                    deviceDao.newCollection(willViewName)
+                }
+                if (!deviceDao.isCollectionExist(viewedName)) {
+                    deviceDao.newCollection(viewedName)
                 }
             }.join()
         }

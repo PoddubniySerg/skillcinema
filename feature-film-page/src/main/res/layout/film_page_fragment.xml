@@ -120,7 +120,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:background="?attr/selectableItemBackground"
-                        android:src="@drawable/film_page_toolbar_will_view_icon"
+                        android:src="@drawable/film_page_toolbar_will_view_icon_selector"
                         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
@@ -129,7 +129,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:background="?attr/selectableItemBackground"
-                        android:src="@drawable/film_page_toolbar_not_seen_icon"
+                        android:src="@drawable/film_page_toolbar_viewed_icon_selector"
                         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck,ImageContrastCheck,ImageContrastCheck,ImageContrastCheck,ImageContrastCheck" />
 
                     <androidx.appcompat.widget.AppCompatImageButton

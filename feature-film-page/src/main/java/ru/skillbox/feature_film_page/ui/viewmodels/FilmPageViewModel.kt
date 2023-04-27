@@ -2,7 +2,6 @@ package ru.skillbox.feature_film_page.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +22,8 @@ import ru.skillbox.feature_film_page.usecases.GetMovieStaffUseCase
 import ru.skillbox.feature_film_page.usecases.GetRelatedMoviesUseCase
 import ru.skillbox.feature_film_page.usecases.GetSeasonUseCase
 import ru.skillbox.feature_film_page.usecases.SetFavouriteUseCase
+import ru.skillbox.feature_film_page.usecases.SetViewedUseCase
+import ru.skillbox.feature_film_page.usecases.SetWillViewUseCase
 import ru.skillbox.feature_film_page.utils.MovieDetailsProcessor
 import ru.skillbox.feature_film_page.utils.RelatedMovieProcessor
 import ru.skillbox.feature_film_page.utils.SeriesSeasonProcessor
@@ -36,6 +37,8 @@ class FilmPageViewModel @Inject constructor(
     private val getMovieGalleryUseCase: GetMovieGalleryUseCase,
     private val getRelatedMoviesUseCase: GetRelatedMoviesUseCase,
     private val setFavouriteUseCase: SetFavouriteUseCase,
+    private val setWillViewUseCase: SetWillViewUseCase,
+    private val setViewedUseCase: SetViewedUseCase,
     private val getMovieCollectionsUseCase: GetMovieCollectionsUseCase
 ) : ViewModel() {
 
@@ -65,6 +68,12 @@ class FilmPageViewModel @Inject constructor(
     private val _isMovieFavouriteChannel = Channel<Boolean>()
     val isMovieFavouriteFlow = _isMovieFavouriteChannel.receiveAsFlow()
 
+    private val _isMovieWillViewChannel = Channel<Boolean>()
+    val isMovieWillViewFlow = _isMovieWillViewChannel.receiveAsFlow()
+
+    private val _isMovieViewedChannel = Channel<Boolean>()
+    val isMovieViewedFlow = _isMovieViewedChannel.receiveAsFlow()
+
     fun getMovieDetails(id: Long) {
         viewModelScope.launch {
             try {
@@ -84,9 +93,27 @@ class FilmPageViewModel @Inject constructor(
 
     fun setFavourite() {
         if (movieDetails != null) {
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 val isMovieFavourite = setFavouriteUseCase.execute(movieDetails!!)
                 _isMovieFavouriteChannel.send(isMovieFavourite)
+            }
+        }
+    }
+
+    fun setWillView() {
+        if (movieDetails != null) {
+            viewModelScope.launch {
+                val isMovieWillView = setWillViewUseCase.execute(movieDetails!!)
+                _isMovieWillViewChannel.send(isMovieWillView)
+            }
+        }
+    }
+
+    fun setViewed() {
+        if (movieDetails != null) {
+            viewModelScope.launch {
+                val isMovieViewed = setViewedUseCase.execute(movieDetails!!)
+                _isMovieViewedChannel.send(isMovieViewed)
             }
         }
     }
@@ -98,6 +125,8 @@ class FilmPageViewModel @Inject constructor(
         getSeasons(movieDetailsConverted)
         _movieDetailsChannel.send(movieDetailsConverted)
         _isMovieFavouriteChannel.send(collections.contains(RequiredCollections.FAVOURITE_COLLECTION.name))
+        _isMovieWillViewChannel.send(collections.contains(RequiredCollections.WILL_VIEW_COLLECTION.name))
+        _isMovieViewedChannel.send(collections.contains(RequiredCollections.VIEWED_COLLECTION.name))
     }
 
     private suspend fun getStaff(id: Long) {

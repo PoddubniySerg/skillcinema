@@ -93,6 +93,14 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
         viewModel.isMovieFavouriteFlow.onEach { isMovieFavourite ->
             binding.filmPageFavoriteButton.isSelected = isMovieFavourite
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.isMovieWillViewFlow.onEach { isMovieWillView ->
+            binding.filmPageWillViewButton.isSelected = isMovieWillView
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.isMovieViewedFlow.onEach { isMovieViewed ->
+            binding.filmPageSeenButton.isSelected = isMovieViewed
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun initAdapters(isSerial: Boolean) {
@@ -165,6 +173,8 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
     private fun initListeners(movieDetails: MovieDetails) {
         with(binding) {
             filmPageFavoriteButton.setOnClickListener { viewModel.setFavourite() }
+            filmPageWillViewButton.setOnClickListener { viewModel.setWillView() }
+            filmPageSeenButton.setOnClickListener { viewModel.setViewed() }
             descriptionShortContentTextView.setOnClickListener { shortDescriptionTextView ->
                 val shortText = movieDetails.shortDescription ?: ""
                 onDescriptionClick(shortDescriptionTextView, isShortDescriptionCollapsed, shortText)
@@ -274,20 +284,20 @@ class FilmPageFragment : BindFragment<FilmPageFragmentBinding>(FilmPageFragmentB
     }
 
     private fun handleState(state: States) {
-        when (state) {
-            States.LOADING -> {
-                with(binding) {
-                    progressBarFilmPage.visibility = View.VISIBLE
-                    filmPageFavoriteButton.isEnabled = false
-                }
+        val isLoadCompleted: Boolean =
+            when (state) {
+                States.LOADING -> false
+                States.COMPLETE -> true
             }
-
-            States.COMPLETE -> {
-                with(binding) {
-                    progressBarFilmPage.visibility = View.GONE
-                    filmPageFavoriteButton.isEnabled = true
+        with(binding) {
+            binding.progressBarFilmPage.visibility =
+                if (isLoadCompleted) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
                 }
-            }
+            filmPageFavoriteButton.isEnabled = isLoadCompleted
+            filmPageWillViewButton.isEnabled = isLoadCompleted
         }
     }
 

@@ -20,5 +20,9 @@ interface FilmPageRepository {
 
     suspend fun setFavourite(movie: MovieDetails): Boolean
 
+    suspend fun setWillView(movie: MovieDetails): Boolean
+
+    suspend fun setViewed(movie: MovieDetails): Boolean
+
     suspend fun getCollections(filmId: Long): List<String>
 }
