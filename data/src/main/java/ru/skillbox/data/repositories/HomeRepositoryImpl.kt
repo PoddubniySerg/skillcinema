@@ -8,4 +8,13 @@ import javax.inject.Inject
 class HomeRepositoryImpl @Inject constructor(
     cinemaApi: CinemaApi,
     deviceDao: DeviceDao
-) : LoaderRepositoryImpl(cinemaApi, deviceDao), HomeRepository
+) : LoaderRepositoryImpl(cinemaApi, deviceDao), HomeRepository {
+
+    override suspend fun filterMoviesByCollection(
+        movies: List<Long>,
+        collection: String
+    ): List<Long> {
+        return deviceDao.filterMoviesByCollection(movies, collection)
+    }
+
+}

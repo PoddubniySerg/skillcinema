@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 open class LoaderRepositoryImpl @Inject constructor(
     private val cinemaApi: CinemaApi,
-    private val deviceDao: DeviceDao
+    protected val deviceDao: DeviceDao
 ) : LoaderRepository {
 
     companion object {

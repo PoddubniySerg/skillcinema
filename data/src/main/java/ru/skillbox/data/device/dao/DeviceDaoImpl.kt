@@ -43,6 +43,13 @@ class DeviceDaoImpl @Inject constructor() : DeviceDao {
         return dbClient.isCollectionExist(name)
     }
 
+    override suspend fun filterMoviesByCollection(
+        movies: List<Long>,
+        collection: String
+    ): List<Long> {
+        return dbClient.filterMoviesByCollection(movies, collection)
+    }
+
     private suspend fun setCollection(movie: MovieDetails, collection: String): Boolean {
         val isCollectionContainMovie = dbClient.isCollectionContainMovie(collection, movie.id)
         val relation = CollectionAndMoviesCrossRef(collection, movie.id)

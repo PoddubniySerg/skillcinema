@@ -3,10 +3,10 @@ package ru.skillbox.feature_onboarding.ui.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 import ru.skillbox.core.domain.models.MoviesCollection
 import ru.skillbox.core.ui.fragments.BindFragment
 import ru.skillbox.core.utils.navigateTo
@@ -23,23 +23,15 @@ internal class LoaderFragment :
             .onboardingComponent()
             .loaderViewModelFactory()
     }
-    private var collectionsFlow: Job? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getCollections()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        this.collectionsFlow = viewModel.collectionsFlow.onEach { collections ->
-            nextPage(collections)
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        this.collectionsFlow?.cancel()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.collectionsFlow.collect { nextPage(it) }
+            }
+        }
     }
 
     private fun getCollections() {

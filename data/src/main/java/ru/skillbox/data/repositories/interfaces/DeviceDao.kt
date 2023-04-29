@@ -15,4 +15,6 @@ interface DeviceDao {
     suspend fun getCollections(filmId: Long): List<String>
 
     suspend fun isCollectionExist(name: String): Boolean
+
+    suspend fun filterMoviesByCollection(movies: List<Long>, collection: String): List<Long>
 }

@@ -78,12 +78,18 @@ interface DbClient {
     * Выбрать все id фильмов из списка, связанных с указанной коллекцией
     * */
     @Query("SELECT movie_id FROM collectionandmoviescrossref WHERE movie_id IN (:movies) AND collection_name = :collection")
-    suspend fun moviesInCollection(movies: List<Long>, collection: String): List<Long>
+    suspend fun filterMoviesByCollection(movies: List<Long>, collection: String): List<Long>
 
+    /*
+    *Получить фильм/сериал и связанный с ним список жанров
+    * */
     @Transaction
     @Query("SELECT * FROM movies WHERE movie_id = :filmId")
     suspend fun getMovieById(filmId: Long): MovieWithGenres?
 
+    /*
+    *Получить коллекцию и связанный с ним список фильмов/сериалов
+    * */
     @Transaction
     @Query("SELECT * FROM collections WHERE collection_name = :collection")
     suspend fun getCollectionWithMovies(collection: String): CollectionWithMovies?
